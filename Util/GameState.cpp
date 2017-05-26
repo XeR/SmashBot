@@ -1609,16 +1609,8 @@ double GameState::getFastfallSpeed(CHARACTER character)
 double GameState::calculateDoubleJumpHeight(CHARACTER character, double initSpeed)
 {
     double gravity = getGravity(character);
-    double height = 0;
-
-    for(int i = 1;; i++)
-    {
-        double tick = initSpeed - (i * gravity);
-        if(tick < 0 || i > 100)
-        {
-            break;
-        }
-        height += tick;
-    }
-    return height;
+    int frames = initSpeed / gravity;
+    int sum = frames * (frames + 1) / 2;
+    
+    return frames * initSpeed - sum * gravity;
 }
