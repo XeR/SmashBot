@@ -1203,19 +1203,13 @@ double GameState::calculateSlideDistance(CHARACTER character, double initSpeed, 
         }
     }
 
-    //This determines magnitude of slide
-    double slideDistance = 0;
-    for(int i = 1; i <= frames; i++)
-    {
-        slideDistance += std::max(std::abs(initSpeed) - (i * slideCoeficient), 0.0);
-    }
+    // Cap the numbers of frames
+    if(frames * slideCoeficient > std::abs(initSpeed))
+        frames = std::abs(initSpeed) / slideCoeficient;
 
-    //Determine direction
-    if(initSpeed < 0)
-    {
-        return (-1.0) * slideDistance;
-    }
-    return slideDistance;
+    //This determines magnitude of slide
+    int sum = frames * (frames + 1) / 2;
+    return frames * initSpeed - sum * slideCoeficient;
 }
 
 double GameState::getRollDistance(CHARACTER character, ACTION action)
